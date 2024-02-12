@@ -1,3 +1,5 @@
+@extends('components.master')
+@section('content')
 <div class="row">
     <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
         <div class="card">
@@ -111,3 +113,19 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+<script>
+    var now = new Date();
+    var hrs = now.getHours();
+    var msg = "";
+
+    if (hrs >  6) msg = "Selamat Pagi, ";      // After 6am
+    if (hrs > 12) msg = "Selamat Siang, ";    // After 12pm
+    if (hrs > 17) msg = "Selamat Sore, ";      // After 5pm
+    if (hrs > 22) msg = "Selamat Malam, ";      // After 5pm
+
+    document.getElementById('greet').innerHTML = msg;
+</script>
+@endsection
