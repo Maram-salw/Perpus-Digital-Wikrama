@@ -1,5 +1,6 @@
 <?php
 
+Use App\Http\Controllers\BukuController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -33,3 +34,5 @@ Route::group(['middleware' => ['auth']], function ()
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::resource('bukus', BukuController::class);
