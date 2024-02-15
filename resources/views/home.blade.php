@@ -12,7 +12,7 @@
                                 {{-- {{ $bukus->count() }} --}}
                             </h5>
                             <p class="mb-0">
-                                buku
+                                Buku
                             </p>
                         </div>
                     </div>
@@ -36,7 +36,7 @@
                                 {{-- {{ $anggotas->count() }} --}}
                             </h5>
                             <p class="mb-0">
-                                anggota
+                                Anggota
                             </p>
                         </div>
                     </div>
@@ -60,7 +60,7 @@
                                 {{-- {{ $peminjamans->count() }} --}}
                             </h5>
                             <p class="mb-0">
-                                peminjaman
+                                Peminjaman
                             </p>
                         </div>
                     </div>

@@ -23,7 +23,7 @@
                     </a>
                 </li>
                 @role("Admin")
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link " href="{{route('bukus.index')}}">
                         <div
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
@@ -31,14 +31,41 @@
                         </div>
                         <span class="nav-link-text ms-1">Buku</span>
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
-                    <a class="nav-link " >
+                    <a class="nav-link " href="{{route('anggotas.index')}}">
                         <div
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Billing</span>
+                        <span class="nav-link-text ms-1">Anggota</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="{{route('bukus.index')}}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Buku</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="{{route('peminjamans.index')}}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Peminjaman</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="{{route('historis.index')}}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">History</span>
                     </a>
                 </li>
                 @endrole
@@ -105,7 +132,7 @@
                     </div>
                 </div> --}}
             </div>
-            <a href="/logout" 
+            <a href="/logout"
                 class="btn btn-danger btn-sm w-100 mb-3">Informasi Akun</a>
                 <form action="/logout" method="POST">
                     @csrf
