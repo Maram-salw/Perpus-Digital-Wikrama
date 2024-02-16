@@ -136,7 +136,7 @@
         <section class="content">
                 @yield('content')
             </section>
-      
+
     </main>
     <div class="fixed-plugin">
         <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
@@ -232,6 +232,7 @@
     {{-- Script --}}
         @include('components.layouts.script')
     {{-- //Script --}}
+    @include('sweetalert::alert')
 </body>
 
 </html>
