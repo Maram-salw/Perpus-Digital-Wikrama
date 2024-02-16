@@ -66,7 +66,7 @@ class AsciiSlugger implements SluggerInterface, LocaleAwareInterface
      */
     private array $transliterators = [];
 
-    public function __construct(string $defaultLocale = null, array|\Closure $symbolsMap = null)
+    public function __construct(?string $defaultLocale = null, array|\Closure|null $symbolsMap = null)
     {
         $this->defaultLocale = $defaultLocale;
         $this->symbolsMap = $symbolsMap ?? $this->symbolsMap;
@@ -91,7 +91,23 @@ class AsciiSlugger implements SluggerInterface, LocaleAwareInterface
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function slug(string $string, string $separator = '-', string $locale = null): AbstractUnicodeString
+=======
+    public function withEmoji(bool|string $emoji = true): static
+    {
+        if (false !== $emoji && !class_exists(EmojiTransliterator::class)) {
+            throw new \LogicException(sprintf('You cannot use the "%s()" method as the "symfony/intl" package is not installed. Try running "composer require symfony/intl".', __METHOD__));
+        }
+
+        $new = clone $this;
+        $new->emoji = $emoji;
+
+        return $new;
+    }
+
+    public function slug(string $string, string $separator = '-', ?string $locale = null): AbstractUnicodeString
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         $locale = $locale ?? $this->defaultLocale;
 

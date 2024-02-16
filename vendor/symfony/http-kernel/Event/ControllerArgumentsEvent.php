@@ -44,7 +44,14 @@ final class ControllerArgumentsEvent extends KernelEvent
         return $this->controller;
     }
 
+<<<<<<< HEAD
     public function setController(callable $controller)
+=======
+    /**
+     * @param array<class-string, list<object>>|null $attributes
+     */
+    public function setController(callable $controller, ?array $attributes = null): void
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         $this->controller = $controller;
     }
@@ -57,5 +64,47 @@ final class ControllerArgumentsEvent extends KernelEvent
     public function setArguments(array $arguments)
     {
         $this->arguments = $arguments;
+<<<<<<< HEAD
+=======
+        unset($this->namedArguments);
+    }
+
+    public function getNamedArguments(): array
+    {
+        if (isset($this->namedArguments)) {
+            return $this->namedArguments;
+        }
+
+        $namedArguments = [];
+        $arguments = $this->arguments;
+
+        foreach ($this->controllerEvent->getControllerReflector()->getParameters() as $i => $param) {
+            if ($param->isVariadic()) {
+                $namedArguments[$param->name] = \array_slice($arguments, $i);
+                break;
+            }
+            if (\array_key_exists($i, $arguments)) {
+                $namedArguments[$param->name] = $arguments[$i];
+            } elseif ($param->isDefaultvalueAvailable()) {
+                $namedArguments[$param->name] = $param->getDefaultValue();
+            }
+        }
+
+        return $this->namedArguments = $namedArguments;
+    }
+
+    /**
+     * @template T of class-string|null
+     *
+     * @param T $className
+     *
+     * @return array<class-string, list<object>>|list<object>
+     *
+     * @psalm-return (T is null ? array<class-string, list<object>> : list<object>)
+     */
+    public function getAttributes(?string $className = null): array
+    {
+        return $this->controllerEvent->getAttributes($className);
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     }
 }

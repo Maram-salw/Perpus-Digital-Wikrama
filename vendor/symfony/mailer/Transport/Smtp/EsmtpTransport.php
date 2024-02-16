@@ -30,7 +30,11 @@ class EsmtpTransport extends SmtpTransport
     private string $username = '';
     private string $password = '';
 
+<<<<<<< HEAD
     public function __construct(string $host = 'localhost', int $port = 0, bool $tls = null, EventDispatcherInterface $dispatcher = null, LoggerInterface $logger = null)
+=======
+    public function __construct(string $host = 'localhost', int $port = 0, ?bool $tls = null, ?EventDispatcherInterface $dispatcher = null, ?LoggerInterface $logger = null, ?AbstractStream $stream = null, ?array $authenticators = null)
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         parent::__construct(null, $dispatcher, $logger);
 

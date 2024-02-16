@@ -14,12 +14,15 @@ namespace Symfony\Component\Mailer;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Bridge\Amazon\Transport\SesTransportFactory;
+use Symfony\Component\Mailer\Bridge\Brevo\Transport\BrevoTransportFactory;
 use Symfony\Component\Mailer\Bridge\Google\Transport\GmailTransportFactory;
 use Symfony\Component\Mailer\Bridge\Mailchimp\Transport\MandrillTransportFactory;
 use Symfony\Component\Mailer\Bridge\Mailgun\Transport\MailgunTransportFactory;
 use Symfony\Component\Mailer\Bridge\Mailjet\Transport\MailjetTransportFactory;
+use Symfony\Component\Mailer\Bridge\MailPace\Transport\MailPaceTransportFactory;
 use Symfony\Component\Mailer\Bridge\OhMySmtp\Transport\OhMySmtpTransportFactory;
 use Symfony\Component\Mailer\Bridge\Postmark\Transport\PostmarkTransportFactory;
+use Symfony\Component\Mailer\Bridge\Scaleway\Transport\ScalewayTransportFactory;
 use Symfony\Component\Mailer\Bridge\Sendgrid\Transport\SendgridTransportFactory;
 use Symfony\Component\Mailer\Bridge\Sendinblue\Transport\SendinblueTransportFactory;
 use Symfony\Component\Mailer\Exception\InvalidArgumentException;
@@ -43,12 +46,15 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 final class Transport
 {
     private const FACTORY_CLASSES = [
+        BrevoTransportFactory::class,
         GmailTransportFactory::class,
         MailgunTransportFactory::class,
         MailjetTransportFactory::class,
+        MailPaceTransportFactory::class,
         MandrillTransportFactory::class,
         OhMySmtpTransportFactory::class,
         PostmarkTransportFactory::class,
+        ScalewayTransportFactory::class,
         SendgridTransportFactory::class,
         SendinblueTransportFactory::class,
         SesTransportFactory::class,
@@ -56,14 +62,22 @@ final class Transport
 
     private iterable $factories;
 
+<<<<<<< HEAD
     public static function fromDsn(string $dsn, EventDispatcherInterface $dispatcher = null, HttpClientInterface $client = null, LoggerInterface $logger = null): TransportInterface
+=======
+    public static function fromDsn(#[\SensitiveParameter] string $dsn, ?EventDispatcherInterface $dispatcher = null, ?HttpClientInterface $client = null, ?LoggerInterface $logger = null): TransportInterface
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         $factory = new self(iterator_to_array(self::getDefaultFactories($dispatcher, $client, $logger)));
 
         return $factory->fromString($dsn);
     }
 
+<<<<<<< HEAD
     public static function fromDsns(array $dsns, EventDispatcherInterface $dispatcher = null, HttpClientInterface $client = null, LoggerInterface $logger = null): TransportInterface
+=======
+    public static function fromDsns(#[\SensitiveParameter] array $dsns, ?EventDispatcherInterface $dispatcher = null, ?HttpClientInterface $client = null, ?LoggerInterface $logger = null): TransportInterface
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         $factory = new self(iterator_to_array(self::getDefaultFactories($dispatcher, $client, $logger)));
 
@@ -159,7 +173,7 @@ final class Transport
     /**
      * @return \Traversable<int, TransportFactoryInterface>
      */
-    public static function getDefaultFactories(EventDispatcherInterface $dispatcher = null, HttpClientInterface $client = null, LoggerInterface $logger = null): \Traversable
+    public static function getDefaultFactories(?EventDispatcherInterface $dispatcher = null, ?HttpClientInterface $client = null, ?LoggerInterface $logger = null): \Traversable
     {
         foreach (self::FACTORY_CLASSES as $factoryClass) {
             if (class_exists($factoryClass)) {

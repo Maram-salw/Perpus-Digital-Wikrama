@@ -11,14 +11,9 @@
 
 namespace Symfony\Component\Routing\Loader;
 
-use Doctrine\Common\Annotations\Reader;
-use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\Config\Loader\LoaderResolverInterface;
-use Symfony\Component\Config\Resource\FileResource;
-use Symfony\Component\Routing\Annotation\Route as RouteAnnotation;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
+trigger_deprecation('symfony/routing', '6.4', 'The "%s" class is deprecated, use "%s" instead.', AnnotationClassLoader::class, AttributeClassLoader::class);
 
+<<<<<<< HEAD
 /**
  * AnnotationClassLoader loads routing information from a PHP class and its methods.
  *
@@ -74,19 +69,17 @@ abstract class AnnotationClassLoader implements LoaderInterface
 {
     protected $reader;
     protected $env;
+=======
+class_exists(AttributeClassLoader::class);
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
 
+if (false) {
     /**
-     * @var string
+     * @deprecated since Symfony 6.4, to be removed in 7.0, use {@link AttributeClassLoader} instead
      */
-    protected $routeAnnotationClass = RouteAnnotation::class;
-
-    /**
-     * @var int
-     */
-    protected $defaultRouteIndex = 0;
-
-    public function __construct(Reader $reader = null, string $env = null)
+    abstract class AnnotationClassLoader extends AttributeClassLoader
     {
+<<<<<<< HEAD
         $this->reader = $reader;
         $this->env = $env;
     }
@@ -384,5 +377,7 @@ abstract class AnnotationClassLoader implements LoaderInterface
                 yield $annotation;
             }
         }
+=======
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     }
 }

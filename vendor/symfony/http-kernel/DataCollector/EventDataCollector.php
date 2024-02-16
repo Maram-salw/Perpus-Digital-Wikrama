@@ -32,6 +32,7 @@ class EventDataCollector extends DataCollector implements LateDataCollectorInter
     private $requestStack;
     private $currentRequest = null;
 
+<<<<<<< HEAD
     public function __construct(EventDispatcherInterface $dispatcher = null, RequestStack $requestStack = null)
     {
         $this->dispatcher = $dispatcher;
@@ -42,6 +43,23 @@ class EventDataCollector extends DataCollector implements LateDataCollectorInter
      * {@inheritdoc}
      */
     public function collect(Request $request, Response $response, \Throwable $exception = null)
+=======
+    /**
+     * @param iterable<EventDispatcherInterface>|EventDispatcherInterface|null $dispatchers
+     */
+    public function __construct(
+        iterable|EventDispatcherInterface|null $dispatchers = null,
+        private ?RequestStack $requestStack = null,
+        private string $defaultDispatcher = 'event_dispatcher',
+    ) {
+        if ($dispatchers instanceof EventDispatcherInterface) {
+            $dispatchers = [$this->defaultDispatcher => $dispatchers];
+        }
+        $this->dispatchers = $dispatchers ?? [];
+    }
+
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         $this->currentRequest = $this->requestStack && $this->requestStack->getMainRequest() !== $request ? $request : null;
         $this->data = [
@@ -53,7 +71,7 @@ class EventDataCollector extends DataCollector implements LateDataCollectorInter
 
     public function reset()
     {
-        $this->data = [];
+        parent::reset();
 
         if ($this->dispatcher instanceof ResetInterface) {
             $this->dispatcher->reset();
@@ -82,7 +100,11 @@ class EventDataCollector extends DataCollector implements LateDataCollectorInter
     /**
      * @see TraceableEventDispatcher
      */
+<<<<<<< HEAD
     public function getCalledListeners(): array|Data
+=======
+    public function setCalledListeners(array $listeners, ?string $dispatcher = null): void
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         return $this->data['called_listeners'];
     }
@@ -90,7 +112,11 @@ class EventDataCollector extends DataCollector implements LateDataCollectorInter
     /**
      * @see TraceableEventDispatcher
      */
+<<<<<<< HEAD
     public function setNotCalledListeners(array $listeners)
+=======
+    public function getCalledListeners(?string $dispatcher = null): array|Data
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         $this->data['not_called_listeners'] = $listeners;
     }
@@ -98,9 +124,23 @@ class EventDataCollector extends DataCollector implements LateDataCollectorInter
     /**
      * @see TraceableEventDispatcher
      */
+<<<<<<< HEAD
     public function getNotCalledListeners(): array|Data
     {
         return $this->data['not_called_listeners'];
+=======
+    public function setNotCalledListeners(array $listeners, ?string $dispatcher = null): void
+    {
+        $this->data[$dispatcher ?? $this->defaultDispatcher]['not_called_listeners'] = $listeners;
+    }
+
+    /**
+     * @see TraceableEventDispatcher
+     */
+    public function getNotCalledListeners(?string $dispatcher = null): array|Data
+    {
+        return $this->data[$dispatcher ?? $this->defaultDispatcher]['not_called_listeners'] ?? [];
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     }
 
     /**
@@ -108,7 +148,11 @@ class EventDataCollector extends DataCollector implements LateDataCollectorInter
      *
      * @see TraceableEventDispatcher
      */
+<<<<<<< HEAD
     public function setOrphanedEvents(array $events)
+=======
+    public function setOrphanedEvents(array $events, ?string $dispatcher = null): void
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         $this->data['orphaned_events'] = $events;
     }
@@ -116,7 +160,11 @@ class EventDataCollector extends DataCollector implements LateDataCollectorInter
     /**
      * @see TraceableEventDispatcher
      */
+<<<<<<< HEAD
     public function getOrphanedEvents(): array|Data
+=======
+    public function getOrphanedEvents(?string $dispatcher = null): array|Data
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         return $this->data['orphaned_events'];
     }

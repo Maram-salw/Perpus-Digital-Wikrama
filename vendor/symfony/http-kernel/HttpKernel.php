@@ -55,7 +55,11 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
     protected $requestStack;
     private $argumentResolver;
 
+<<<<<<< HEAD
     public function __construct(EventDispatcherInterface $dispatcher, ControllerResolverInterface $resolver, RequestStack $requestStack = null, ArgumentResolverInterface $argumentResolver = null)
+=======
+    public function __construct(EventDispatcherInterface $dispatcher, ControllerResolverInterface $resolver, ?RequestStack $requestStack = null, ?ArgumentResolverInterface $argumentResolver = null, bool $handleAllThrowables = false)
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         $this->dispatcher = $dispatcher;
         $this->resolver = $resolver;
@@ -86,6 +90,22 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
             return $this->handleThrowable($e, $request, $type);
         } finally {
             $this->requestStack->pop();
+<<<<<<< HEAD
+=======
+
+            if ($response instanceof StreamedResponse && $callback = $response->getCallback()) {
+                $requestStack = $this->requestStack;
+
+                $response->setCallback(static function () use ($request, $callback, $requestStack) {
+                    $requestStack->push($request);
+                    try {
+                        $callback();
+                    } finally {
+                        $requestStack->pop();
+                    }
+                });
+            }
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
         }
     }
 
@@ -100,7 +120,11 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
     /**
      * @internal
      */
+<<<<<<< HEAD
     public function terminateWithException(\Throwable $exception, Request $request = null)
+=======
+    public function terminateWithException(\Throwable $exception, ?Request $request = null): void
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         if (!$request = $request ?: $this->requestStack->getMainRequest()) {
             throw $exception;

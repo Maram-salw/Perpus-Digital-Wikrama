@@ -61,7 +61,11 @@ class StaticPrefixCollection
     /**
      * Adds a route to a group.
      */
+<<<<<<< HEAD
     public function addRoute(string $prefix, array|StaticPrefixCollection $route)
+=======
+    public function addRoute(string $prefix, array|self $route): void
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         [$prefix, $staticPrefix] = $this->getCommonPrefix($prefix, $prefix);
 
@@ -147,7 +151,7 @@ class StaticPrefixCollection
         $baseLength = \strlen($this->prefix);
         $end = min(\strlen($prefix), \strlen($anotherPrefix));
         $staticLength = null;
-        set_error_handler([__CLASS__, 'handleError']);
+        set_error_handler(self::handleError(...));
 
         try {
             for ($i = $baseLength; $i < $end && $prefix[$i] === $anotherPrefix[$i]; ++$i) {

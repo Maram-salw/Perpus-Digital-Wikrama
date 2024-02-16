@@ -37,12 +37,12 @@ class FlattenException
     private int $line;
     private ?string $asString = null;
 
-    public static function create(\Exception $exception, int $statusCode = null, array $headers = []): static
+    public static function create(\Exception $exception, ?int $statusCode = null, array $headers = []): static
     {
         return static::createFromThrowable($exception, $statusCode, $headers);
     }
 
-    public static function createFromThrowable(\Throwable $exception, int $statusCode = null, array $headers = []): static
+    public static function createFromThrowable(\Throwable $exception, ?int $statusCode = null, array $headers = []): static
     {
         $e = new static();
         $e->setMessage($exception->getMessage());
@@ -82,6 +82,36 @@ class FlattenException
         return $e;
     }
 
+<<<<<<< HEAD
+=======
+    public static function createWithDataRepresentation(\Throwable $throwable, ?int $statusCode = null, array $headers = [], ?VarCloner $cloner = null): static
+    {
+        $e = static::createFromThrowable($throwable, $statusCode, $headers);
+
+        static $defaultCloner;
+
+        if (!$cloner ??= $defaultCloner) {
+            $cloner = $defaultCloner = new VarCloner();
+            $cloner->addCasters([
+                \Throwable::class => function (\Throwable $e, array $a, Stub $s, bool $isNested): array {
+                    if (!$isNested) {
+                        unset($a[Caster::PREFIX_PROTECTED.'message']);
+                        unset($a[Caster::PREFIX_PROTECTED.'code']);
+                        unset($a[Caster::PREFIX_PROTECTED.'file']);
+                        unset($a[Caster::PREFIX_PROTECTED.'line']);
+                        unset($a["\0Error\0trace"], $a["\0Exception\0trace"]);
+                        unset($a["\0Error\0previous"], $a["\0Exception\0previous"]);
+                    }
+
+                    return $a;
+                },
+            ]);
+        }
+
+        return $e->setDataRepresentation($cloner->cloneVar($throwable));
+    }
+
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     public function toArray(): array
     {
         $exceptions = [];

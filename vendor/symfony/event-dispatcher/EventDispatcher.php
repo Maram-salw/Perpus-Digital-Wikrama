@@ -42,10 +42,14 @@ class EventDispatcher implements EventDispatcherInterface
         }
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
     public function dispatch(object $event, string $eventName = null): object
+=======
+    public function dispatch(object $event, ?string $eventName = null): object
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         $eventName = $eventName ?? \get_class($event);
 
@@ -62,10 +66,14 @@ class EventDispatcher implements EventDispatcherInterface
         return $event;
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
     public function getListeners(string $eventName = null): array
+=======
+    public function getListeners(?string $eventName = null): array
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         if (null !== $eventName) {
             if (empty($this->listeners[$eventName])) {
@@ -117,10 +125,14 @@ class EventDispatcher implements EventDispatcherInterface
         return null;
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
     public function hasListeners(string $eventName = null): bool
+=======
+    public function hasListeners(?string $eventName = null): bool
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         if (null !== $eventName) {
             return !empty($this->listeners[$eventName]);

@@ -1,6 +1,28 @@
 CHANGELOG
 =========
 
+<<<<<<< HEAD
+=======
+6.4
+---
+
+ * Dump uninitialized properties
+
+6.3
+---
+
+ * Add caster for `WeakMap`
+ * Add support of named arguments to `dd()` and `dump()` to display the argument name
+ * Add support for `Relay\Relay`
+ * Add display of invisible characters
+
+6.2
+---
+
+ * Add support for `FFI\CData` and `FFI\CType`
+ * Deprecate calling `VarDumper::setHandler()` without arguments
+
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
 5.4
 ---
 

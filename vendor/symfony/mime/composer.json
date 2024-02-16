@@ -23,17 +23,28 @@
     "require-dev": {
         "egulias/email-validator": "^2.1.10|^3.1|^4",
         "phpdocumentor/reflection-docblock": "^3.0|^4.0|^5.0",
+<<<<<<< HEAD
         "symfony/dependency-injection": "^5.4|^6.0",
         "symfony/property-access": "^5.4|^6.0",
         "symfony/property-info": "^5.4|^6.0",
         "symfony/serializer": "^5.4.14|~6.0.14|^6.1.6"
+=======
+        "symfony/dependency-injection": "^5.4|^6.0|^7.0",
+        "symfony/property-access": "^5.4|^6.0|^7.0",
+        "symfony/property-info": "^5.4|^6.0|^7.0",
+        "symfony/serializer": "^6.3.2|^7.0"
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     },
     "conflict": {
         "egulias/email-validator": "~3.0.0",
         "phpdocumentor/reflection-docblock": "<3.2.2",
         "phpdocumentor/type-resolver": "<1.4.0",
         "symfony/mailer": "<5.4",
+<<<<<<< HEAD
         "symfony/serializer": "<5.4.14|>=6.0,<6.0.14|>=6.1,<6.1.6"
+=======
+        "symfony/serializer": "<6.3.2"
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     },
     "autoload": {
         "psr-4": { "Symfony\\Component\\Mime\\": "" },

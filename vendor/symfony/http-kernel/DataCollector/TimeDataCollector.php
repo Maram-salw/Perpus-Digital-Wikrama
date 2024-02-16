@@ -27,16 +27,20 @@ class TimeDataCollector extends DataCollector implements LateDataCollectorInterf
     private $kernel;
     private $stopwatch;
 
-    public function __construct(KernelInterface $kernel = null, Stopwatch $stopwatch = null)
+    public function __construct(?KernelInterface $kernel = null, ?Stopwatch $stopwatch = null)
     {
         $this->kernel = $kernel;
         $this->stopwatch = $stopwatch;
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
     public function collect(Request $request, Response $response, \Throwable $exception = null)
+=======
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         if (null !== $this->kernel) {
             $startTime = $this->kernel->getStartTime();

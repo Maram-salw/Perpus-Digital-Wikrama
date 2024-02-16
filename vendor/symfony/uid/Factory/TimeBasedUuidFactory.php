@@ -17,16 +17,26 @@ use Symfony\Component\Uid\UuidV6;
 
 class TimeBasedUuidFactory
 {
+    /**
+     * @var class-string<Uuid&TimeBasedUidInterface>
+     */
     private string $class;
     private $node;
 
-    public function __construct(string $class, Uuid $node = null)
+    /**
+     * @param class-string<Uuid&TimeBasedUidInterface> $class
+     */
+    public function __construct(string $class, ?Uuid $node = null)
     {
         $this->class = $class;
         $this->node = $node;
     }
 
+<<<<<<< HEAD
     public function create(\DateTimeInterface $time = null): UuidV6|UuidV1
+=======
+    public function create(?\DateTimeInterface $time = null): Uuid&TimeBasedUidInterface
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         $class = $this->class;
 

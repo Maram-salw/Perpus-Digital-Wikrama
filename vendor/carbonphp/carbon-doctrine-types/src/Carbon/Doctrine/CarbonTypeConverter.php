@@ -1,5 +1,10 @@
 <?php
 
+<<<<<<< HEAD
+=======
+declare(strict_types=1);
+
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
 namespace Carbon\Doctrine;
 
 use Carbon\Carbon;
@@ -8,9 +13,16 @@ use DateTimeInterface;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\DB2Platform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
+<<<<<<< HEAD
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Doctrine\DBAL\Types\ConversionException;
+=======
+use Doctrine\DBAL\Platforms\SQLitePlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use Doctrine\DBAL\Types\Exception\InvalidType;
+use Doctrine\DBAL\Types\Exception\ValueNotConvertible;
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
 use Exception;
 
 /**
@@ -58,10 +70,25 @@ trait CarbonTypeConverter
 
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     *
-     * @return T|null
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
+    {
+        if ($value === null) {
+            return $value;
+        }
+
+        if ($value instanceof DateTimeInterface) {
+            return $value->format('Y-m-d H:i:s.u');
+        }
+
+        throw InvalidType::new(
+            $value,
+            static::class,
+            ['null', 'DateTime', 'Carbon']
+        );
+    }
+
+    private function doConvertToPHPValue(mixed $value)
     {
         $class = $this->getCarbonClassName();
 
@@ -83,9 +110,13 @@ trait CarbonTypeConverter
         }
 
         if (!$date) {
-            throw ConversionException::conversionFailedFormat(
+            throw ValueNotConvertible::new(
                 $value,
+<<<<<<< HEAD
                 $this->getTypeName(),
+=======
+                static::class,
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
                 'Y-m-d H:i:s.u or any format supported by '.$class.'::parse()',
                 $error
             );
@@ -94,24 +125,36 @@ trait CarbonTypeConverter
         return $date;
     }
 
+<<<<<<< HEAD
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
+=======
+    private function getMaximumPrecision(AbstractPlatform $platform): int
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
-        if ($value === null) {
-            return $value;
+        if ($platform instanceof DB2Platform) {
+            return 12;
         }
 
-        if ($value instanceof DateTimeInterface) {
-            return $value->format('Y-m-d H:i:s.u');
+        if ($platform instanceof OraclePlatform) {
+            return 9;
         }
 
+<<<<<<< HEAD
         throw ConversionException::conversionFailedInvalidType(
             $value,
             $this->getTypeName(),
             ['null', 'DateTime', 'Carbon']
         );
+=======
+        if ($platform instanceof SQLServerPlatform || $platform instanceof SQLitePlatform) {
+            return 3;
+        }
+
+        return 6;
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     }
 
     private function getTypeName(): string

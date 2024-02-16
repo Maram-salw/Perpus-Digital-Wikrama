@@ -31,9 +31,9 @@ final class CompleteCommand extends Command
     protected static $defaultName = '|_complete';
     protected static $defaultDescription = 'Internal command to provide shell completion suggestions';
 
-    private $completionOutputs;
+    private array $completionOutputs;
 
-    private $isDebug = false;
+    private bool $isDebug = false;
 
     /**
      * @param array<string, class-string<CompletionOutputInterface>> $completionOutputs A list of additional completion outputs, with shell name as key and FQCN as value

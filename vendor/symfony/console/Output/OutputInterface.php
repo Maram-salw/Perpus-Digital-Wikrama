@@ -47,11 +47,20 @@ interface OutputInterface
 
     /**
      * Sets the verbosity of the output.
+<<<<<<< HEAD
+=======
+     *
+     * @param self::VERBOSITY_* $level
+     *
+     * @return void
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
      */
     public function setVerbosity(int $level);
 
     /**
      * Gets the current verbosity of the output.
+     *
+     * @return self::VERBOSITY_*
      */
     public function getVerbosity(): int;
 

@@ -50,7 +50,7 @@ class ProgressIndicator
      * @param int        $indicatorChangeInterval Change interval in milliseconds
      * @param array|null $indicatorValues         Animated indicator characters
      */
-    public function __construct(OutputInterface $output, string $format = null, int $indicatorChangeInterval = 100, array $indicatorValues = null)
+    public function __construct(OutputInterface $output, ?string $format = null, int $indicatorChangeInterval = 100, ?array $indicatorValues = null)
     {
         $this->output = $output;
 
@@ -227,6 +227,7 @@ class ProgressIndicator
     private static function initPlaceholderFormatters(): array
     {
         return [
+<<<<<<< HEAD
             'indicator' => function (self $indicator) {
                 return $indicator->indicatorValues[$indicator->indicatorCurrent % \count($indicator->indicatorValues)];
             },
@@ -239,6 +240,12 @@ class ProgressIndicator
             'memory' => function () {
                 return Helper::formatMemory(memory_get_usage(true));
             },
+=======
+            'indicator' => fn (self $indicator) => $indicator->indicatorValues[$indicator->indicatorCurrent % \count($indicator->indicatorValues)],
+            'message' => fn (self $indicator) => $indicator->message,
+            'elapsed' => fn (self $indicator) => Helper::formatTime(time() - $indicator->startTime, 2),
+            'memory' => fn () => Helper::formatMemory(memory_get_usage(true)),
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
         ];
     }
 }

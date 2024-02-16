@@ -7,7 +7,11 @@ interfaces.
 Sponsor
 -------
 
+<<<<<<< HEAD
 The Console component for Symfony 5.4/6.0 is [backed][1] by [Les-Tilleuls.coop][2].
+=======
+The Console component for Symfony 6.4 is [backed][1] by [Les-Tilleuls.coop][2].
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
 
 Les-Tilleuls.coop is a team of 50+ Symfony experts who can help you design, develop and
 fix your projects. We provide a wide range of professional services including development,

@@ -283,9 +283,15 @@ final class ProgressBar
     /**
      * Returns an iterator that will automatically update the progress bar when iterated.
      *
-     * @param int|null $max Number of steps to complete the bar (0 if indeterminate), if null it will be inferred from $iterable
+     * @template TKey
+     * @template TValue
+     *
+     * @param iterable<TKey, TValue> $iterable
+     * @param int|null               $max      Number of steps to complete the bar (0 if indeterminate), if null it will be inferred from $iterable
+     *
+     * @return iterable<TKey, TValue>
      */
-    public function iterate(iterable $iterable, int $max = null): iterable
+    public function iterate(iterable $iterable, ?int $max = null): iterable
     {
         $this->start($max ?? (is_countable($iterable) ? \count($iterable) : 0));
 
@@ -303,7 +309,11 @@ final class ProgressBar
      *
      * @param int|null $max Number of steps to complete the bar (0 if indeterminate), null to leave unchanged
      */
+<<<<<<< HEAD
     public function start(int $max = null)
+=======
+    public function start(?int $max = null, int $startAt = 0): void
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         $this->startTime = time();
         $this->step = 0;
@@ -513,22 +523,26 @@ final class ProgressBar
 
                 return $display;
             },
+<<<<<<< HEAD
             'elapsed' => function (self $bar) {
                 return Helper::formatTime(time() - $bar->getStartTime());
             },
+=======
+            'elapsed' => fn (self $bar) => Helper::formatTime(time() - $bar->getStartTime(), 2),
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
             'remaining' => function (self $bar) {
                 if (!$bar->getMaxSteps()) {
                     throw new LogicException('Unable to display the remaining time if the maximum number of steps is not set.');
                 }
 
-                return Helper::formatTime($bar->getRemaining());
+                return Helper::formatTime($bar->getRemaining(), 2);
             },
             'estimated' => function (self $bar) {
                 if (!$bar->getMaxSteps()) {
                     throw new LogicException('Unable to display the estimated time if the maximum number of steps is not set.');
                 }
 
-                return Helper::formatTime($bar->getEstimated());
+                return Helper::formatTime($bar->getEstimated(), 2);
             },
             'memory' => function (self $bar) {
                 return Helper::formatMemory(memory_get_usage(true));

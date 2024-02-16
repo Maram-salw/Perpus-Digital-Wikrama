@@ -315,6 +315,56 @@ class Table
                     }
                 }
             }
+<<<<<<< HEAD
+=======
+        } elseif ($vertical) {
+            $formatter = $this->output->getFormatter();
+            $maxHeaderLength = array_reduce($this->headers[0] ?? [], static fn ($max, $header) => max($max, Helper::width(Helper::removeDecoration($formatter, $header))), 0);
+
+            foreach ($this->rows as $row) {
+                if ($row instanceof TableSeparator) {
+                    continue;
+                }
+
+                if ($rows) {
+                    $rows[] = [$divider];
+                }
+
+                $containsColspan = false;
+                foreach ($row as $cell) {
+                    if ($containsColspan = $isCellWithColspan($cell)) {
+                        break;
+                    }
+                }
+
+                $headers = $this->headers[0] ?? [];
+                $maxRows = max(\count($headers), \count($row));
+                for ($i = 0; $i < $maxRows; ++$i) {
+                    $cell = (string) ($row[$i] ?? '');
+
+                    $parts = explode("\n", $cell);
+                    foreach ($parts as $idx => $part) {
+                        if ($headers && !$containsColspan) {
+                            if (0 === $idx) {
+                                $rows[] = [sprintf(
+                                    '<comment>%s</>: %s',
+                                    str_pad($headers[$i] ?? '', $maxHeaderLength, ' ', \STR_PAD_LEFT),
+                                    $part
+                                )];
+                            } else {
+                                $rows[] = [sprintf(
+                                    '%s  %s',
+                                    str_pad('', $maxHeaderLength, ' ', \STR_PAD_LEFT),
+                                    $part
+                                )];
+                            }
+                        } elseif ('' !== $cell) {
+                            $rows[] = [$part];
+                        }
+                    }
+                }
+            }
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
         } else {
             $rows = array_merge($this->headers, [$divider], $this->rows);
         }
@@ -351,7 +401,7 @@ class Table
 
                 if ($isHeader && !$isHeaderSeparatorRendered) {
                     $this->renderRowSeparator(
-                        $isHeader ? self::SEPARATOR_TOP : self::SEPARATOR_TOP_BOTTOM,
+                        self::SEPARATOR_TOP,
                         $hasTitle ? $this->headerTitle : null,
                         $hasTitle ? $this->style->getHeaderTitleFormat() : null
                     );
@@ -361,7 +411,7 @@ class Table
 
                 if ($isFirstRow) {
                     $this->renderRowSeparator(
-                        $isHeader ? self::SEPARATOR_TOP : self::SEPARATOR_TOP_BOTTOM,
+                        $horizontal ? self::SEPARATOR_TOP : self::SEPARATOR_TOP_BOTTOM,
                         $hasTitle ? $this->headerTitle : null,
                         $hasTitle ? $this->style->getHeaderTitleFormat() : null
                     );
@@ -389,7 +439,11 @@ class Table
      *
      *     +-----+-----------+-------+
      */
+<<<<<<< HEAD
     private function renderRowSeparator(int $type = self::SEPARATOR_MID, string $title = null, string $titleFormat = null)
+=======
+    private function renderRowSeparator(int $type = self::SEPARATOR_MID, ?string $title = null, ?string $titleFormat = null): void
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         if (0 === $count = $this->numberOfColumns) {
             return;
@@ -454,7 +508,11 @@ class Table
      *
      *     | 9971-5-0210-0 | A Tale of Two Cities  | Charles Dickens  |
      */
+<<<<<<< HEAD
     private function renderRow(array $row, string $cellFormat, string $firstCellFormat = null)
+=======
+    private function renderRow(array $row, string $cellFormat, ?string $firstCellFormat = null): void
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         $rowContent = $this->renderColumnSeparator(self::BORDER_OUTSIDE);
         $columns = $this->getRowColumns($row);

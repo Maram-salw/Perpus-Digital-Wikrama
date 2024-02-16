@@ -11,9 +11,9 @@
 
 namespace Symfony\Component\VarDumper;
 
+use Symfony\Component\ErrorHandler\ErrorRenderer\FileLinkFormatter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Debug\FileLinkFormatter;
 use Symfony\Component\VarDumper\Caster\ReflectionCaster;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
@@ -46,7 +46,7 @@ class VarDumper
         return (self::$handler)($var);
     }
 
-    public static function setHandler(callable $callable = null): ?callable
+    public static function setHandler(?callable $callable = null): ?callable
     {
         $prevHandler = self::$handler;
 
@@ -76,19 +76,30 @@ class VarDumper
             case 'server' === $format:
             case $format && 'tcp' === parse_url($format, \PHP_URL_SCHEME):
                 $host = 'server' === $format ? $_SERVER['VAR_DUMPER_SERVER'] ?? '127.0.0.1:9912' : $format;
-                $dumper = \in_array(\PHP_SAPI, ['cli', 'phpdbg'], true) ? new CliDumper() : new HtmlDumper();
+                $dumper = \in_array(\PHP_SAPI, ['cli', 'phpdbg', 'embed'], true) ? new CliDumper() : new HtmlDumper();
                 $dumper = new ServerDumper($host, $dumper, self::getDefaultContextProviders());
                 break;
             default:
-                $dumper = \in_array(\PHP_SAPI, ['cli', 'phpdbg'], true) ? new CliDumper() : new HtmlDumper();
+                $dumper = \in_array(\PHP_SAPI, ['cli', 'phpdbg', 'embed'], true) ? new CliDumper() : new HtmlDumper();
         }
 
         if (!$dumper instanceof ServerDumper) {
             $dumper = new ContextualizedDumper($dumper, [new SourceContextProvider()]);
         }
 
+<<<<<<< HEAD
         self::$handler = function ($var) use ($cloner, $dumper) {
             $dumper->dump($cloner->cloneVar($var));
+=======
+        self::$handler = function ($var, ?string $label = null) use ($cloner, $dumper) {
+            $var = $cloner->cloneVar($var);
+
+            if (null !== $label) {
+                $var = $var->withContext(['label' => $label]);
+            }
+
+            $dumper->dump($var);
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
         };
     }
 
@@ -96,7 +107,7 @@ class VarDumper
     {
         $contextProviders = [];
 
-        if (!\in_array(\PHP_SAPI, ['cli', 'phpdbg'], true) && class_exists(Request::class)) {
+        if (!\in_array(\PHP_SAPI, ['cli', 'phpdbg', 'embed'], true) && class_exists(Request::class)) {
             $requestStack = new RequestStack();
             $requestStack->push(Request::createFromGlobals());
             $contextProviders['request'] = new RequestContextProvider($requestStack);

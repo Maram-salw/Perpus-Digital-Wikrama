@@ -42,7 +42,7 @@ class TraceableEventDispatcher implements EventDispatcherInterface, ResetInterfa
     private $requestStack;
     private string $currentRequestHash = '';
 
-    public function __construct(EventDispatcherInterface $dispatcher, Stopwatch $stopwatch, LoggerInterface $logger = null, RequestStack $requestStack = null)
+    public function __construct(EventDispatcherInterface $dispatcher, Stopwatch $stopwatch, ?LoggerInterface $logger = null, ?RequestStack $requestStack = null)
     {
         $this->dispatcher = $dispatcher;
         $this->stopwatch = $stopwatch;
@@ -92,10 +92,14 @@ class TraceableEventDispatcher implements EventDispatcherInterface, ResetInterfa
         return $this->dispatcher->removeSubscriber($subscriber);
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
     public function getListeners(string $eventName = null): array
+=======
+    public function getListeners(?string $eventName = null): array
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         return $this->dispatcher->getListeners($eventName);
     }
@@ -118,18 +122,26 @@ class TraceableEventDispatcher implements EventDispatcherInterface, ResetInterfa
         return $this->dispatcher->getListenerPriority($eventName, $listener);
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
     public function hasListeners(string $eventName = null): bool
+=======
+    public function hasListeners(?string $eventName = null): bool
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         return $this->dispatcher->hasListeners($eventName);
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
     public function dispatch(object $event, string $eventName = null): object
+=======
+    public function dispatch(object $event, ?string $eventName = null): object
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         $eventName = $eventName ?? \get_class($event);
 
@@ -166,7 +178,7 @@ class TraceableEventDispatcher implements EventDispatcherInterface, ResetInterfa
         return $event;
     }
 
-    public function getCalledListeners(Request $request = null): array
+    public function getCalledListeners(?Request $request = null): array
     {
         if (null === $this->callStack) {
             return [];
@@ -184,7 +196,7 @@ class TraceableEventDispatcher implements EventDispatcherInterface, ResetInterfa
         return $called;
     }
 
-    public function getNotCalledListeners(Request $request = null): array
+    public function getNotCalledListeners(?Request $request = null): array
     {
         try {
             $allListeners = $this->getListeners();
@@ -227,7 +239,7 @@ class TraceableEventDispatcher implements EventDispatcherInterface, ResetInterfa
         return $notCalled;
     }
 
-    public function getOrphanedEvents(Request $request = null): array
+    public function getOrphanedEvents(?Request $request = null): array
     {
         if ($request) {
             return $this->orphanedEvents[spl_object_hash($request)] ?? [];
@@ -353,4 +365,37 @@ class TraceableEventDispatcher implements EventDispatcherInterface, ResetInterfa
 
         return 1;
     }
+<<<<<<< HEAD
+=======
+
+    private function getListenersWithPriority(): array
+    {
+        $result = [];
+
+        $allListeners = new \ReflectionProperty(EventDispatcher::class, 'listeners');
+
+        foreach ($allListeners->getValue($this->dispatcher) as $eventName => $listenersByPriority) {
+            foreach ($listenersByPriority as $priority => $listeners) {
+                foreach ($listeners as $listener) {
+                    $result[$eventName][] = [$listener, $priority];
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    private function getListenersWithoutPriority(): array
+    {
+        $result = [];
+
+        foreach ($this->getListeners() as $eventName => $listeners) {
+            foreach ($listeners as $listener) {
+                $result[$eventName][] = [$listener, null];
+            }
+        }
+
+        return $result;
+    }
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
 }

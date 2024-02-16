@@ -82,12 +82,12 @@ class PdoSessionHandler extends AbstractSessionHandler
     /**
      * Username when lazy-connect.
      */
-    private string $username = '';
+    private ?string $username = null;
 
     /**
      * Password when lazy-connect.
      */
-    private string $password = '';
+    private ?string $password = null;
 
     /**
      * Connection options when lazy-connect.
@@ -142,7 +142,11 @@ class PdoSessionHandler extends AbstractSessionHandler
      *
      * @throws \InvalidArgumentException When PDO error mode is not PDO::ERRMODE_EXCEPTION
      */
+<<<<<<< HEAD
     public function __construct(\PDO|string $pdoOrDsn = null, array $options = [])
+=======
+    public function __construct(#[\SensitiveParameter] \PDO|string|null $pdoOrDsn = null, #[\SensitiveParameter] array $options = [])
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         if ($pdoOrDsn instanceof \PDO) {
             if (\PDO::ERRMODE_EXCEPTION !== $pdoOrDsn->getAttribute(\PDO::ATTR_ERRMODE)) {
@@ -166,6 +170,60 @@ class PdoSessionHandler extends AbstractSessionHandler
         $this->password = $options['db_password'] ?? $this->password;
         $this->connectionOptions = $options['db_connection_options'] ?? $this->connectionOptions;
         $this->lockMode = $options['lock_mode'] ?? $this->lockMode;
+<<<<<<< HEAD
+=======
+        $this->ttl = $options['ttl'] ?? null;
+    }
+
+    /**
+     * Adds the Table to the Schema if it doesn't exist.
+     */
+    public function configureSchema(Schema $schema, ?\Closure $isSameDatabase = null): void
+    {
+        if ($schema->hasTable($this->table) || ($isSameDatabase && !$isSameDatabase($this->getConnection()->exec(...)))) {
+            return;
+        }
+
+        $table = $schema->createTable($this->table);
+        switch ($this->driver) {
+            case 'mysql':
+                $table->addColumn($this->idCol, Types::BINARY)->setLength(128)->setNotnull(true);
+                $table->addColumn($this->dataCol, Types::BLOB)->setNotnull(true);
+                $table->addColumn($this->lifetimeCol, Types::INTEGER)->setUnsigned(true)->setNotnull(true);
+                $table->addColumn($this->timeCol, Types::INTEGER)->setUnsigned(true)->setNotnull(true);
+                $table->addOption('collate', 'utf8mb4_bin');
+                $table->addOption('engine', 'InnoDB');
+                break;
+            case 'sqlite':
+                $table->addColumn($this->idCol, Types::TEXT)->setNotnull(true);
+                $table->addColumn($this->dataCol, Types::BLOB)->setNotnull(true);
+                $table->addColumn($this->lifetimeCol, Types::INTEGER)->setNotnull(true);
+                $table->addColumn($this->timeCol, Types::INTEGER)->setNotnull(true);
+                break;
+            case 'pgsql':
+                $table->addColumn($this->idCol, Types::STRING)->setLength(128)->setNotnull(true);
+                $table->addColumn($this->dataCol, Types::BINARY)->setNotnull(true);
+                $table->addColumn($this->lifetimeCol, Types::INTEGER)->setNotnull(true);
+                $table->addColumn($this->timeCol, Types::INTEGER)->setNotnull(true);
+                break;
+            case 'oci':
+                $table->addColumn($this->idCol, Types::STRING)->setLength(128)->setNotnull(true);
+                $table->addColumn($this->dataCol, Types::BLOB)->setNotnull(true);
+                $table->addColumn($this->lifetimeCol, Types::INTEGER)->setNotnull(true);
+                $table->addColumn($this->timeCol, Types::INTEGER)->setNotnull(true);
+                break;
+            case 'sqlsrv':
+                $table->addColumn($this->idCol, Types::TEXT)->setLength(128)->setNotnull(true);
+                $table->addColumn($this->dataCol, Types::BLOB)->setNotnull(true);
+                $table->addColumn($this->lifetimeCol, Types::INTEGER)->setUnsigned(true)->setNotnull(true);
+                $table->addColumn($this->timeCol, Types::INTEGER)->setUnsigned(true)->setNotnull(true);
+                break;
+            default:
+                throw new \DomainException(sprintf('Creating the session table is currently not implemented for PDO driver "%s".', $this->driver));
+        }
+        $table->setPrimaryKey([$this->idCol]);
+        $table->addIndex([$this->lifetimeCol], $this->lifetimeCol.'_idx');
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     }
 
     /**

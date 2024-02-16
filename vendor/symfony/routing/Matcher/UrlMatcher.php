@@ -246,7 +246,7 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
 
     protected function getExpressionLanguage()
     {
-        if (null === $this->expressionLanguage) {
+        if (!isset($this->expressionLanguage)) {
             if (!class_exists(ExpressionLanguage::class)) {
                 throw new \LogicException('Unable to use expressions as the Symfony ExpressionLanguage component is not installed.');
             }

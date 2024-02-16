@@ -33,12 +33,17 @@ final class ArgumentResolver implements ArgumentResolverInterface
     /**
      * @param iterable<mixed, ArgumentValueResolverInterface> $argumentValueResolvers
      */
+<<<<<<< HEAD
     public function __construct(ArgumentMetadataFactoryInterface $argumentMetadataFactory = null, iterable $argumentValueResolvers = [])
+=======
+    public function __construct(?ArgumentMetadataFactoryInterface $argumentMetadataFactory = null, iterable $argumentValueResolvers = [], ?ContainerInterface $namedResolvers = null)
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         $this->argumentMetadataFactory = $argumentMetadataFactory ?? new ArgumentMetadataFactory();
         $this->argumentValueResolvers = $argumentValueResolvers ?: self::getDefaultArgumentValueResolvers();
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
@@ -49,6 +54,46 @@ final class ArgumentResolver implements ArgumentResolverInterface
         foreach ($this->argumentMetadataFactory->createArgumentMetadata($controller) as $metadata) {
             foreach ($this->argumentValueResolvers as $resolver) {
                 if (!$resolver->supports($request, $metadata)) {
+=======
+    public function getArguments(Request $request, callable $controller, ?\ReflectionFunctionAbstract $reflector = null): array
+    {
+        $arguments = [];
+
+        foreach ($this->argumentMetadataFactory->createArgumentMetadata($controller, $reflector) as $metadata) {
+            $argumentValueResolvers = $this->argumentValueResolvers;
+            $disabledResolvers = [];
+
+            if ($this->namedResolvers && $attributes = $metadata->getAttributesOfType(ValueResolver::class, $metadata::IS_INSTANCEOF)) {
+                $resolverName = null;
+                foreach ($attributes as $attribute) {
+                    if ($attribute->disabled) {
+                        $disabledResolvers[$attribute->resolver] = true;
+                    } elseif ($resolverName) {
+                        throw new \LogicException(sprintf('You can only pin one resolver per argument, but argument "$%s" of "%s()" has more.', $metadata->getName(), $this->getPrettyName($controller)));
+                    } else {
+                        $resolverName = $attribute->resolver;
+                    }
+                }
+
+                if ($resolverName) {
+                    if (!$this->namedResolvers->has($resolverName)) {
+                        throw new ResolverNotFoundException($resolverName, $this->namedResolvers instanceof ServiceProviderInterface ? array_keys($this->namedResolvers->getProvidedServices()) : []);
+                    }
+
+                    $argumentValueResolvers = [
+                        $this->namedResolvers->get($resolverName),
+                        new RequestAttributeValueResolver(),
+                        new DefaultValueResolver(),
+                    ];
+                }
+            }
+
+            foreach ($argumentValueResolvers as $name => $resolver) {
+                if ((!$resolver instanceof ValueResolverInterface || $resolver instanceof TraceableValueResolver) && !$resolver->supports($request, $metadata)) {
+                    continue;
+                }
+                if (isset($disabledResolvers[\is_int($name) ? $resolver::class : $name])) {
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
                     continue;
                 }
 

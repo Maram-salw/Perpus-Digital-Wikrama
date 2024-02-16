@@ -11,24 +11,9 @@
 
 namespace Symfony\Component\Routing\Annotation;
 
-/**
- * Annotation class for @Route().
- *
- * @Annotation
- * @NamedArgumentConstructor
- * @Target({"CLASS", "METHOD"})
- *
- * @author Fabien Potencier <fabien@symfony.com>
- * @author Alexander M. Turek <me@derrabus.de>
- */
-#[\Attribute(\Attribute::IS_REPEATABLE | \Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
-class Route
-{
-    private ?string $path = null;
-    private array $localizedPaths = [];
-    private array $methods;
-    private array $schemes;
+// do not deprecate in 6.4/7.0, to make it easier for the ecosystem to support 6.4, 7.4 and 8.0 simultaneously
 
+<<<<<<< HEAD
     /**
      * @param string[]        $requirements
      * @param string[]|string $methods
@@ -194,5 +179,13 @@ class Route
     public function getEnv(): ?string
     {
         return $this->env;
+=======
+class_exists(\Symfony\Component\Routing\Attribute\Route::class);
+
+if (false) {
+    #[\Attribute(\Attribute::IS_REPEATABLE | \Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
+    class Route extends \Symfony\Component\Routing\Attribute\Route
+    {
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     }
 }

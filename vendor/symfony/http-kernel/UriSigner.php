@@ -11,22 +11,17 @@
 
 namespace Symfony\Component\HttpKernel;
 
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\UriSigner as HttpFoundationUriSigner;
 
-/**
- * Signs URIs.
- *
- * @author Fabien Potencier <fabien@symfony.com>
- */
-class UriSigner
-{
-    private string $secret;
-    private string $parameter;
+trigger_deprecation('symfony/http-kernel', '6.4', 'The "%s" class is deprecated, use "%s" instead.', UriSigner::class, HttpFoundationUriSigner::class);
 
+class_exists(HttpFoundationUriSigner::class);
+
+if (false) {
     /**
-     * @param string $secret    A secret
-     * @param string $parameter Query string parameter to use
+     * @deprecated since Symfony 6.4, to be removed in 7.0, use {@link HttpFoundationUriSigner} instead
      */
+<<<<<<< HEAD
     public function __construct(string $secret, string $parameter = '_hash')
     {
         $this->secret = $secret;
@@ -105,5 +100,9 @@ class UriSigner
         $fragment = isset($url['fragment']) ? '#'.$url['fragment'] : '';
 
         return $scheme.$user.$pass.$host.$port.$path.$query.$fragment;
+=======
+    class UriSigner extends HttpFoundationUriSigner
+    {
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     }
 }

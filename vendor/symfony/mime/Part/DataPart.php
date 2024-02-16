@@ -21,24 +21,35 @@ use Symfony\Component\Mime\MimeTypes;
 class DataPart extends TextPart
 {
     /** @internal */
-    protected $_parent;
+    protected array $_parent;
 
+<<<<<<< HEAD
     private static $mimeTypes;
 
     private $filename;
     private $mediaType;
     private $cid;
     private $handle;
+=======
+    private ?string $filename = null;
+    private string $mediaType;
+    private ?string $cid = null;
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
 
     /**
      * @param resource|string $body
      */
-    public function __construct($body, string $filename = null, string $contentType = null, string $encoding = null)
+    public function __construct($body, ?string $filename = null, ?string $contentType = null, ?string $encoding = null)
     {
+<<<<<<< HEAD
         unset($this->_parent);
 
         if (null === $contentType) {
             $contentType = 'application/octet-stream';
+=======
+        if ($body instanceof File && !$filename) {
+            $filename = $body->getFilename();
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
         }
         [$this->mediaType, $subtype] = explode('/', $contentType);
 
@@ -51,7 +62,7 @@ class DataPart extends TextPart
         $this->setDisposition('attachment');
     }
 
-    public static function fromPath(string $path, string $name = null, string $contentType = null): self
+    public static function fromPath(string $path, ?string $name = null, ?string $contentType = null): self
     {
         if (null === $contentType) {
             $ext = strtolower(substr($path, strrpos($path, '.') + 1));
@@ -157,6 +168,9 @@ class DataPart extends TextPart
         return ['_headers', '_parent', 'filename', 'mediaType'];
     }
 
+    /**
+     * @return void
+     */
     public function __wakeup()
     {
         $r = new \ReflectionProperty(AbstractPart::class, 'headers');

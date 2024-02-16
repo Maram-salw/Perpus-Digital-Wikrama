@@ -11,10 +11,10 @@
 
 namespace Symfony\Component\HttpKernel\DataCollector;
 
+use Symfony\Component\ErrorHandler\ErrorRenderer\FileLinkFormatter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Debug\FileLinkFormatter;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\VarDumper\Cloner\Data;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
@@ -42,8 +42,9 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
     private $requestStack;
     private $dumper;
     private mixed $sourceContextProvider;
+    private bool $webMode;
 
-    public function __construct(Stopwatch $stopwatch = null, string|FileLinkFormatter $fileLinkFormat = null, string $charset = null, RequestStack $requestStack = null, DataDumperInterface|Connection $dumper = null)
+    public function __construct(?Stopwatch $stopwatch = null, string|FileLinkFormatter|null $fileLinkFormat = null, ?string $charset = null, ?RequestStack $requestStack = null, DataDumperInterface|Connection|null $dumper = null, ?bool $webMode = null)
     {
         $fileLinkFormat = $fileLinkFormat ?: \ini_get('xdebug.file_link_format') ?: get_cfg_var('xdebug.file_link_format');
         $this->stopwatch = $stopwatch;
@@ -51,6 +52,7 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
         $this->charset = $charset ?: \ini_get('php.output_encoding') ?: \ini_get('default_charset') ?: 'UTF-8';
         $this->requestStack = $requestStack;
         $this->dumper = $dumper;
+        $this->webMode = $webMode ?? !\in_array(\PHP_SAPI, ['cli', 'phpdbg', 'embed'], true);
 
         // All clones share these properties by reference:
         $this->rootRefs = [
@@ -97,7 +99,11 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
         }
     }
 
+<<<<<<< HEAD
     public function collect(Request $request, Response $response, \Throwable $exception = null)
+=======
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         if (!$this->dataCount) {
             $this->data = [];
@@ -121,9 +127,7 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
                 $dumper->setDisplayOptions(['fileLinkFormat' => $this->fileLinkFormat]);
             } else {
                 $dumper = new CliDumper('php://output', $this->charset);
-                if (method_exists($dumper, 'setDisplayOptions')) {
-                    $dumper->setDisplayOptions(['fileLinkFormat' => $this->fileLinkFormat]);
-                }
+                $dumper->setDisplayOptions(['fileLinkFormat' => $this->fileLinkFormat]);
             }
 
             foreach ($this->data as $dump) {
@@ -134,10 +138,15 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
 
     public function reset()
     {
+<<<<<<< HEAD
         if ($this->stopwatch) {
             $this->stopwatch->reset();
         }
         $this->data = [];
+=======
+        $this->stopwatch?->reset();
+        parent::reset();
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
         $this->dataCount = 0;
         $this->isCollected = true;
         $this->clonesCount = 0;
@@ -168,7 +177,7 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
     /**
      * @internal
      */
-    public function __wakeup()
+    public function __wakeup(): void
     {
         parent::__wakeup();
 
@@ -234,14 +243,12 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
                 --$i;
             }
 
-            if (!\in_array(\PHP_SAPI, ['cli', 'phpdbg'], true) && stripos($h[$i], 'html')) {
+            if ($this->webMode) {
                 $dumper = new HtmlDumper('php://output', $this->charset);
                 $dumper->setDisplayOptions(['fileLinkFormat' => $this->fileLinkFormat]);
             } else {
                 $dumper = new CliDumper('php://output', $this->charset);
-                if (method_exists($dumper, 'setDisplayOptions')) {
-                    $dumper->setDisplayOptions(['fileLinkFormat' => $this->fileLinkFormat]);
-                }
+                $dumper->setDisplayOptions(['fileLinkFormat' => $this->fileLinkFormat]);
             }
 
             foreach ($this->data as $i => $dump) {

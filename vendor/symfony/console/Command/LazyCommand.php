@@ -43,7 +43,7 @@ final class LazyCommand extends Command
         $this->getCommand()->ignoreValidationErrors();
     }
 
-    public function setApplication(Application $application = null): void
+    public function setApplication(?Application $application = null): void
     {
         if ($this->command instanceof parent) {
             $this->command->setApplication($application);
@@ -108,14 +108,28 @@ final class LazyCommand extends Command
         return $this->getCommand()->getNativeDefinition();
     }
 
+<<<<<<< HEAD
     public function addArgument(string $name, int $mode = null, string $description = '', mixed $default = null): static
+=======
+    /**
+     * @param array|\Closure(CompletionInput,CompletionSuggestions):list<string|Suggestion> $suggestedValues The values used for input completion
+     */
+    public function addArgument(string $name, ?int $mode = null, string $description = '', mixed $default = null /* array|\Closure $suggestedValues = [] */): static
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         $this->getCommand()->addArgument($name, $mode, $description, $default);
 
         return $this;
     }
 
+<<<<<<< HEAD
     public function addOption(string $name, string|array $shortcut = null, int $mode = null, string $description = '', mixed $default = null): static
+=======
+    /**
+     * @param array|\Closure(CompletionInput,CompletionSuggestions):list<string|Suggestion> $suggestedValues The values used for input completion
+     */
+    public function addOption(string $name, string|array|null $shortcut = null, ?int $mode = null, string $description = '', mixed $default = null /* array|\Closure $suggestedValues = [] */): static
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         $this->getCommand()->addOption($name, $shortcut, $mode, $description, $default);
 

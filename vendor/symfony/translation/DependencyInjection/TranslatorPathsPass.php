@@ -22,6 +22,8 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
  */
 class TranslatorPathsPass extends AbstractRecursivePass
 {
+    protected bool $skipScalars = true;
+
     private int $level = 0;
 
     /**

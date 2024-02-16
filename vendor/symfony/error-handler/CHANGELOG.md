@@ -1,6 +1,25 @@
 CHANGELOG
 =========
 
+<<<<<<< HEAD
+=======
+6.4
+---
+
+ * `FlattenExceptionNormalizer` no longer implements `ContextAwareNormalizerInterface`
+
+6.3
+---
+
+ * Display exception properties in the HTML error page
+
+6.1
+---
+
+ * Report overridden `@final` constants and properties
+ * Read environment variable `SYMFONY_IDE` to configure file link format
+
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
 5.4
 ---
 

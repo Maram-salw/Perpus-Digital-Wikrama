@@ -123,6 +123,12 @@ class RegisterControllerArgumentLocatorsPass implements CompilerPassInterface
                     /** @var \ReflectionParameter $p */
                     $type = ltrim($target = (string) ProxyHelper::getTypeHint($r, $p), '\\');
                     $invalidBehavior = ContainerInterface::IGNORE_ON_INVALID_REFERENCE;
+<<<<<<< HEAD
+=======
+                    $autowireAttributes = $autowire ? $emptyAutowireAttributes : [];
+                    $parsedName = $p->name;
+                    $k = null;
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
 
                     if (isset($arguments[$r->name][$p->name])) {
                         $target = $arguments[$r->name][$p->name];
@@ -133,7 +139,11 @@ class RegisterControllerArgumentLocatorsPass implements CompilerPassInterface
                         } elseif ($p->allowsNull() && !$p->isOptional()) {
                             $invalidBehavior = ContainerInterface::NULL_ON_INVALID_REFERENCE;
                         }
-                    } elseif (isset($bindings[$bindingName = $type.' $'.$name = Target::parseName($p)]) || isset($bindings[$bindingName = '$'.$name]) || isset($bindings[$bindingName = $type])) {
+                    } elseif (isset($bindings[$bindingName = $type.' $'.$name = Target::parseName($p, $k, $parsedName)])
+                        || isset($bindings[$bindingName = $type.' $'.$parsedName])
+                        || isset($bindings[$bindingName = '$'.$name])
+                        || isset($bindings[$bindingName = $type])
+                    ) {
                         $binding = $bindings[$bindingName];
 
                         [$bindingValue, $bindingId, , $bindingType, $bindingFile] = $binding->getValues();

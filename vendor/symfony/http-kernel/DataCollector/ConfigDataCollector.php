@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\VarDumper\Caster\ClassStub;
+use Symfony\Component\VarDumper\Cloner\Data;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -29,15 +30,23 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
     /**
      * Sets the Kernel associated with this Request.
      */
+<<<<<<< HEAD
     public function setKernel(KernelInterface $kernel = null)
+=======
+    public function setKernel(?KernelInterface $kernel = null): void
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         $this->kernel = $kernel;
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
     public function collect(Request $request, Response $response, \Throwable $exception = null)
+=======
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         $eom = \DateTime::createFromFormat('d/m/Y', '01/'.Kernel::END_OF_MAINTENANCE);
         $eol = \DateTime::createFromFormat('d/m/Y', '01/'.Kernel::END_OF_LIFE);
@@ -75,6 +84,7 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
         }
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
@@ -84,6 +94,9 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
     }
 
     public function lateCollect()
+=======
+    public function lateCollect(): void
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         $this->data = $this->cloneVar($this->data);
     }
@@ -218,7 +231,7 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
         return $this->data['zend_opcache_enabled'];
     }
 
-    public function getBundles()
+    public function getBundles(): array|Data
     {
         return $this->data['bundles'];
     }

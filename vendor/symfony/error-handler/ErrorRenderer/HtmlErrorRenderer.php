@@ -15,8 +15,14 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+<<<<<<< HEAD
 use Symfony\Component\HttpKernel\Debug\FileLinkFormatter;
 use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
+=======
+use Symfony\Component\HttpKernel\Log\DebugLoggerConfigurator;
+use Symfony\Component\VarDumper\Cloner\Data;
+use Symfony\Component\VarDumper\Dumper\HtmlDumper;
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
 
 /**
  * @author Yonel Ceruto <yonelceruto@gmail.com>
@@ -35,7 +41,7 @@ class HtmlErrorRenderer implements ErrorRendererInterface
 
     private bool|\Closure $debug;
     private string $charset;
-    private string|array|FileLinkFormatter|false $fileLinkFormat;
+    private FileLinkFormatter $fileLinkFormat;
     private ?string $projectDir;
     private string|\Closure $outputBuffer;
     private $logger;
@@ -46,11 +52,15 @@ class HtmlErrorRenderer implements ErrorRendererInterface
      * @param bool|callable   $debug        The debugging mode as a boolean or a callable that should return it
      * @param string|callable $outputBuffer The output buffer as a string or a callable that should return it
      */
-    public function __construct(bool|callable $debug = false, string $charset = null, string|FileLinkFormatter $fileLinkFormat = null, string $projectDir = null, string|callable $outputBuffer = '', LoggerInterface $logger = null)
+    public function __construct(bool|callable $debug = false, ?string $charset = null, string|FileLinkFormatter|null $fileLinkFormat = null, ?string $projectDir = null, string|callable $outputBuffer = '', ?LoggerInterface $logger = null)
     {
         $this->debug = \is_bool($debug) || $debug instanceof \Closure ? $debug : \Closure::fromCallable($debug);
         $this->charset = $charset ?: (\ini_get('default_charset') ?: 'UTF-8');
+<<<<<<< HEAD
         $this->fileLinkFormat = $fileLinkFormat ?: (\ini_get('xdebug.file_link_format') ?: get_cfg_var('xdebug.file_link_format'));
+=======
+        $this->fileLinkFormat = $fileLinkFormat instanceof FileLinkFormatter ? $fileLinkFormat : new FileLinkFormatter($fileLinkFormat);
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
         $this->projectDir = $projectDir;
         $this->outputBuffer = \is_string($outputBuffer) || $outputBuffer instanceof \Closure ? $outputBuffer : \Closure::fromCallable($outputBuffer);
         $this->logger = $logger;
@@ -142,7 +152,7 @@ class HtmlErrorRenderer implements ErrorRendererInterface
             'exceptionMessage' => $exceptionMessage,
             'statusText' => $statusText,
             'statusCode' => $statusCode,
-            'logger' => $this->logger instanceof DebugLoggerInterface ? $this->logger : null,
+            'logger' => null !== $this->logger && class_exists(DebugLoggerConfigurator::class) ? DebugLoggerConfigurator::getDebugLogger($this->logger) : null,
             'currentContent' => \is_string($this->outputBuffer) ? $this->outputBuffer : ($this->outputBuffer)(),
         ]);
     }
@@ -161,6 +171,8 @@ class HtmlErrorRenderer implements ErrorRendererInterface
                 $formattedValue = '<em>'.strtolower(var_export($item[1], true)).'</em>';
             } elseif ('resource' === $item[0]) {
                 $formattedValue = '<em>resource</em>';
+            } elseif (preg_match('/[^\x07-\x0D\x1B\x20-\xFF]/', $item[1])) {
+                $formattedValue = '<em>binary string</em>';
             } else {
                 $formattedValue = str_replace("\n", '', $this->escape(var_export($item[1], true)));
             }
@@ -200,15 +212,6 @@ class HtmlErrorRenderer implements ErrorRendererInterface
         return null;
     }
 
-    private function getFileLink(string $file, int $line): string|false
-    {
-        if ($fmt = $this->fileLinkFormat) {
-            return \is_string($fmt) ? strtr($fmt, ['%f' => $file, '%l' => $line]) : $fmt->format($file, $line);
-        }
-
-        return false;
-    }
-
     /**
      * Formats a file path.
      *
@@ -216,7 +219,7 @@ class HtmlErrorRenderer implements ErrorRendererInterface
      * @param int    $line The line number
      * @param string $text Use this text for the link rather than the file path
      */
-    private function formatFile(string $file, int $line, string $text = null): string
+    private function formatFile(string $file, int $line, ?string $text = null): string
     {
         $file = trim($file);
 
@@ -232,11 +235,9 @@ class HtmlErrorRenderer implements ErrorRendererInterface
             $text .= ' at line '.$line;
         }
 
-        if (false !== $link = $this->getFileLink($file, $line)) {
-            return sprintf('<a href="%s" title="Click to open this file" class="file_link">%s</a>', $this->escape($link), $text);
-        }
+        $link = $this->fileLinkFormat->format($file, $line);
 
-        return $text;
+        return sprintf('<a href="%s" title="Click to open this file" class="file_link">%s</a>', $this->escape($link), $text);
     }
 
     /**

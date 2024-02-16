@@ -62,7 +62,11 @@ class Connection
         $context = array_filter($context);
         $encodedPayload = base64_encode(serialize([$data, $context]))."\n";
 
+<<<<<<< HEAD
         set_error_handler([self::class, 'nullErrorHandler']);
+=======
+        set_error_handler(static fn () => null);
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
         try {
             if (-1 !== stream_socket_sendto($this->socket, $encodedPayload)) {
                 return true;
@@ -89,7 +93,11 @@ class Connection
 
     private function createSocket()
     {
+<<<<<<< HEAD
         set_error_handler([self::class, 'nullErrorHandler']);
+=======
+        set_error_handler(static fn () => null);
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
         try {
             return stream_socket_client($this->host, $errno, $errstr, 3, \STREAM_CLIENT_CONNECT | \STREAM_CLIENT_ASYNC_CONNECT);
         } finally {

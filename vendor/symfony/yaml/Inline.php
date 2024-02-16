@@ -34,7 +34,11 @@ class Inline
     private static bool $objectForMap = false;
     private static bool $constantSupport = false;
 
+<<<<<<< HEAD
     public static function initialize(int $flags, int $parsedLineNumber = null, string $parsedFilename = null)
+=======
+    public static function initialize(int $flags, ?int $parsedLineNumber = null, ?string $parsedFilename = null): void
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         self::$exceptionOnInvalidType = (bool) (Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE & $flags);
         self::$objectSupport = (bool) (Yaml::PARSE_OBJECT & $flags);
@@ -55,7 +59,7 @@ class Inline
      *
      * @throws ParseException
      */
-    public static function parse(string $value = null, int $flags = 0, array &$references = []): mixed
+    public static function parse(string $value, int $flags = 0, array &$references = []): mixed
     {
         self::initialize($flags);
 
@@ -158,8 +162,13 @@ class Inline
                         $repr = str_ireplace('INF', '.Inf', $repr);
                     } elseif (floor($value) == $value && $repr == $value) {
                         // Preserve float data type since storing a whole number will result in integer value.
+<<<<<<< HEAD
                         if (false === strpos($repr, 'E')) {
                             $repr = $repr.'.0';
+=======
+                        if (!str_contains($repr, 'E')) {
+                            $repr .= '.0';
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
                         }
                     }
                 } else {
@@ -247,7 +256,7 @@ class Inline
      *
      * @throws ParseException When malformed inline YAML string is parsed
      */
-    public static function parseScalar(string $scalar, int $flags = 0, array $delimiters = null, int &$i = 0, bool $evaluate = true, array &$references = [], bool &$isQuoted = null): mixed
+    public static function parseScalar(string $scalar, int $flags = 0, ?array $delimiters = null, int &$i = 0, bool $evaluate = true, array &$references = [], ?bool &$isQuoted = null): mixed
     {
         if (\in_array($scalar[$i], ['"', "'"], true)) {
             // quoted scalar
@@ -507,7 +516,7 @@ class Inline
                         if ('<<' === $key) {
                             $output += $value;
                         } elseif ($allowOverwrite || !isset($output[$key])) {
-                            if (!$isValueQuoted && \is_string($value) && '' !== $value && '&' === $value[0] && Parser::preg_match(Parser::REFERENCE_PATTERN, $value, $matches)) {
+                            if (!$isValueQuoted && \is_string($value) && '' !== $value && '&' === $value[0] && !self::isBinaryString($value) && Parser::preg_match(Parser::REFERENCE_PATTERN, $value, $matches)) {
                                 $references[$matches['ref']] = $matches['value'];
                                 $value = $matches['value'];
                             }
@@ -536,7 +545,7 @@ class Inline
      *
      * @throws ParseException when object parsing support was disabled and the parser detected a PHP object or when a reference could not be resolved
      */
-    private static function evaluateScalar(string $scalar, int $flags, array &$references = [], bool &$isQuotedString = null): mixed
+    private static function evaluateScalar(string $scalar, int $flags, array &$references = [], ?bool &$isQuotedString = null): mixed
     {
         $isQuotedString = false;
         $scalar = trim($scalar);

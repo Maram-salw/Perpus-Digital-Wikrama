@@ -25,10 +25,14 @@ class ImmutableEventDispatcher implements EventDispatcherInterface
         $this->dispatcher = $dispatcher;
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
     public function dispatch(object $event, string $eventName = null): object
+=======
+    public function dispatch(object $event, ?string $eventName = null): object
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         return $this->dispatcher->dispatch($event, $eventName);
     }
@@ -65,10 +69,14 @@ class ImmutableEventDispatcher implements EventDispatcherInterface
         throw new \BadMethodCallException('Unmodifiable event dispatchers must not be modified.');
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
     public function getListeners(string $eventName = null): array
+=======
+    public function getListeners(?string $eventName = null): array
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         return $this->dispatcher->getListeners($eventName);
     }
@@ -81,10 +89,14 @@ class ImmutableEventDispatcher implements EventDispatcherInterface
         return $this->dispatcher->getListenerPriority($eventName, $listener);
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
     public function hasListeners(string $eventName = null): bool
+=======
+    public function hasListeners(?string $eventName = null): bool
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         return $this->dispatcher->hasListeners($eventName);
     }

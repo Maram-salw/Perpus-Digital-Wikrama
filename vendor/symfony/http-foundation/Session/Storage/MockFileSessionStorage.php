@@ -30,7 +30,7 @@ class MockFileSessionStorage extends MockArraySessionStorage
     /**
      * @param string|null $savePath Path of directory to save session files
      */
-    public function __construct(string $savePath = null, string $name = 'MOCKSESSID', MetadataBag $metaBag = null)
+    public function __construct(?string $savePath = null, string $name = 'MOCKSESSID', ?MetadataBag $metaBag = null)
     {
         if (null === $savePath) {
             $savePath = sys_get_temp_dir();
@@ -65,10 +65,14 @@ class MockFileSessionStorage extends MockArraySessionStorage
         return true;
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
     public function regenerate(bool $destroy = false, int $lifetime = null): bool
+=======
+    public function regenerate(bool $destroy = false, ?int $lifetime = null): bool
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         if (!$this->started) {
             $this->start();

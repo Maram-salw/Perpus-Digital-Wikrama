@@ -26,15 +26,19 @@ class ClosureLoader extends Loader
     /**
      * Loads a Closure.
      */
-    public function load(mixed $closure, string $type = null): RouteCollection
+    public function load(mixed $closure, ?string $type = null): RouteCollection
     {
         return $closure($this->env);
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
     public function supports(mixed $resource, string $type = null): bool
+=======
+    public function supports(mixed $resource, ?string $type = null): bool
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         return $resource instanceof \Closure && (!$type || 'closure' === $type);
     }

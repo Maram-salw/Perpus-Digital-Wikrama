@@ -64,7 +64,20 @@ class SessionHandlerFactory
                 if (!class_exists(DriverManager::class)) {
                     throw new \InvalidArgumentException(sprintf('Unsupported DSN "%s". Try running "composer require doctrine/dbal".', $connection));
                 }
+<<<<<<< HEAD
                 $connection = DriverManager::getConnection(['url' => $connection])->getWrappedConnection();
+=======
+                $connection[3] = '-';
+                $params = class_exists(DsnParser::class) ? (new DsnParser())->parse($connection) : ['url' => $connection];
+                $config = new Configuration();
+                if (class_exists(DefaultSchemaManagerFactory::class)) {
+                    $config->setSchemaManagerFactory(new DefaultSchemaManagerFactory());
+                }
+
+                $connection = DriverManager::getConnection($params, $config);
+                // The condition should be removed once support for DBAL <3.3 is dropped
+                $connection = method_exists($connection, 'getNativeConnection') ? $connection->getNativeConnection() : $connection->getWrappedConnection();
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
                 // no break;
 
             case str_starts_with($connection, 'mssql://'):

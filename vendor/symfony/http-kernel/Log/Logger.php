@@ -42,7 +42,11 @@ class Logger extends AbstractLogger
     /**
      * @param string|resource|null $output
      */
+<<<<<<< HEAD
     public function __construct(string $minLevel = null, $output = null, callable $formatter = null)
+=======
+    public function __construct(?string $minLevel = null, $output = null, ?callable $formatter = null, private readonly ?RequestStack $requestStack = null, bool $debug = false)
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         if (null === $minLevel) {
             $minLevel = null === $output || 'php://stdout' === $output || 'php://stderr' === $output ? LogLevel::ERROR : LogLevel::WARNING;
@@ -70,6 +74,7 @@ class Logger extends AbstractLogger
         if ($output && false === $this->handle = \is_resource($output) ? $output : @fopen($output, 'a')) {
             throw new InvalidArgumentException(sprintf('Unable to open "%s".', $output));
         }
+        $this->debug = $debug;
     }
 
     /**
@@ -91,6 +96,37 @@ class Logger extends AbstractLogger
         } else {
             error_log($formatter($level, $message, $context, false));
         }
+<<<<<<< HEAD
+=======
+
+        if ($this->debug && $this->requestStack) {
+            $this->record($level, $message, $context);
+        }
+    }
+
+    public function getLogs(?Request $request = null): array
+    {
+        if ($request) {
+            return $this->logs[spl_object_id($request)] ?? [];
+        }
+
+        return array_merge(...array_values($this->logs));
+    }
+
+    public function countErrors(?Request $request = null): int
+    {
+        if ($request) {
+            return $this->errorCount[spl_object_id($request)] ?? 0;
+        }
+
+        return array_sum($this->errorCount);
+    }
+
+    public function clear(): void
+    {
+        $this->logs = [];
+        $this->errorCount = [];
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     }
 
     private function format(string $level, string $message, array $context, bool $prefixDate = true): string

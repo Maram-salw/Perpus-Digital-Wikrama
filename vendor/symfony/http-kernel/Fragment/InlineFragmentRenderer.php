@@ -30,7 +30,7 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
     private $kernel;
     private $dispatcher;
 
-    public function __construct(HttpKernelInterface $kernel, EventDispatcherInterface $dispatcher = null)
+    public function __construct(HttpKernelInterface $kernel, ?EventDispatcherInterface $dispatcher = null)
     {
         $this->kernel = $kernel;
         $this->dispatcher = $dispatcher;
@@ -131,6 +131,15 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
         if ($request->getDefaultLocale() !== $request->getLocale()) {
             $subRequest->setLocale($request->getLocale());
         }
+<<<<<<< HEAD
+=======
+        if ($request->attributes->has('_stateless')) {
+            $subRequest->attributes->set('_stateless', $request->attributes->get('_stateless'));
+        }
+        if ($request->attributes->has('_check_controller_is_allowed')) {
+            $subRequest->attributes->set('_check_controller_is_allowed', $request->attributes->get('_check_controller_is_allowed'));
+        }
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
 
         return $subRequest;
     }

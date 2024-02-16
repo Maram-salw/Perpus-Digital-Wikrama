@@ -40,7 +40,7 @@ class SmtpTransport extends AbstractTransport
     private $stream;
     private string $domain = '[127.0.0.1]';
 
-    public function __construct(AbstractStream $stream = null, EventDispatcherInterface $dispatcher = null, LoggerInterface $logger = null)
+    public function __construct(?AbstractStream $stream = null, ?EventDispatcherInterface $dispatcher = null, ?LoggerInterface $logger = null)
     {
         parent::__construct($dispatcher, $logger);
 
@@ -130,7 +130,7 @@ class SmtpTransport extends AbstractTransport
         return $this->domain;
     }
 
-    public function send(RawMessage $message, Envelope $envelope = null): ?SentMessage
+    public function send(RawMessage $message, ?Envelope $envelope = null): ?SentMessage
     {
         try {
             $message = parent::send($message, $envelope);
@@ -346,6 +346,9 @@ class SmtpTransport extends AbstractTransport
         throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
     }
 
+    /**
+     * @return void
+     */
     public function __wakeup()
     {
         throw new \BadMethodCallException('Cannot unserialize '.__CLASS__);

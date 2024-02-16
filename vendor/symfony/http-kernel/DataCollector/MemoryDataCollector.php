@@ -26,10 +26,14 @@ class MemoryDataCollector extends DataCollector implements LateDataCollectorInte
         $this->reset();
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
     public function collect(Request $request, Response $response, \Throwable $exception = null)
+=======
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         $this->updateMemoryUsage();
     }

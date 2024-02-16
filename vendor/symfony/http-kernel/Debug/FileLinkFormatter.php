@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\HttpKernel\Debug;
 
+<<<<<<< HEAD
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -38,12 +39,25 @@ class FileLinkFormatter
     private $requestStack = null;
     private ?string $baseDir = null;
     private \Closure|string|null $urlFormat;
+=======
+use Symfony\Component\ErrorHandler\ErrorRenderer\FileLinkFormatter as ErrorHandlerFileLinkFormatter;
 
+trigger_deprecation('symfony/http-kernel', '6.4', 'The "%s" class is deprecated, use "%s" instead.', FileLinkFormatter::class, ErrorHandlerFileLinkFormatter::class);
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
+
+class_exists(ErrorHandlerFileLinkFormatter::class);
+
+if (!class_exists(FileLinkFormatter::class, false)) {
+    class_alias(ErrorHandlerFileLinkFormatter::class, FileLinkFormatter::class);
+}
+
+if (false) {
     /**
-     * @param string|\Closure $urlFormat the URL format, or a closure that returns it on-demand
+     * @deprecated since Symfony 6.4, use FileLinkFormatter from the ErrorHandler component instead
      */
-    public function __construct(string|array $fileLinkFormat = null, RequestStack $requestStack = null, string $baseDir = null, string|\Closure $urlFormat = null)
+    class FileLinkFormatter extends ErrorHandlerFileLinkFormatter
     {
+<<<<<<< HEAD
         if (!\is_array($fileLinkFormat) && $fileLinkFormat = (self::FORMATS[$fileLinkFormat] ?? $fileLinkFormat) ?: \ini_get('xdebug.file_link_format') ?: get_cfg_var('xdebug.file_link_format') ?: false) {
             $i = strpos($f = $fileLinkFormat, '&', max(strrpos($f, '%f'), strrpos($f, '%l'))) ?: \strlen($f);
             $fileLinkFormat = [substr($f, 0, $i)] + preg_split('/&([^>]++)>/', substr($f, $i), -1, \PREG_SPLIT_DELIM_CAPTURE);
@@ -111,5 +125,7 @@ class FileLinkFormatter
         }
 
         return false;
+=======
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     }
 }

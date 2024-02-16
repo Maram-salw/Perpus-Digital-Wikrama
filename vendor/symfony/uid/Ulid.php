@@ -25,7 +25,7 @@ class Ulid extends AbstractUid
     private static string $time = '';
     private static array $rand = [];
 
-    public function __construct(string $ulid = null)
+    public function __construct(?string $ulid = null)
     {
         if (null === $ulid) {
             $this->uid = static::generate();
@@ -116,6 +116,13 @@ class Ulid extends AbstractUid
         return hex2bin($ulid);
     }
 
+    /**
+     * Returns the identifier as a base32 case insensitive string.
+     *
+     * @see https://tools.ietf.org/html/rfc4648#section-6
+     *
+     * @example 09EJ0S614A9FXVG9C5537Q9ZE1 (len=26)
+     */
     public function toBase32(): string
     {
         return $this->uid;
@@ -143,7 +150,7 @@ class Ulid extends AbstractUid
         return \DateTimeImmutable::createFromFormat('U.u', substr_replace($time, '.', -3, 0));
     }
 
-    public static function generate(\DateTimeInterface $time = null): string
+    public static function generate(?\DateTimeInterface $time = null): string
     {
         if (null === $mtime = $time) {
             $time = microtime(false);

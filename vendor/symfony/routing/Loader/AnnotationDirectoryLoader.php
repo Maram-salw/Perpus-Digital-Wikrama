@@ -11,22 +11,17 @@
 
 namespace Symfony\Component\Routing\Loader;
 
-use Symfony\Component\Config\Resource\DirectoryResource;
-use Symfony\Component\Routing\RouteCollection;
+trigger_deprecation('symfony/routing', '6.4', 'The "%s" class is deprecated, use "%s" instead.', AnnotationDirectoryLoader::class, AttributeDirectoryLoader::class);
 
-/**
- * AnnotationDirectoryLoader loads routing information from annotations set
- * on PHP classes and methods.
- *
- * @author Fabien Potencier <fabien@symfony.com>
- */
-class AnnotationDirectoryLoader extends AnnotationFileLoader
-{
+class_exists(AttributeDirectoryLoader::class);
+
+if (false) {
     /**
-     * @throws \InvalidArgumentException When the directory does not exist or its routes cannot be parsed
+     * @deprecated since Symfony 6.4, to be removed in 7.0, use {@link AttributeDirectoryLoader} instead
      */
-    public function load(mixed $path, string $type = null): ?RouteCollection
+    class AnnotationDirectoryLoader extends AttributeDirectoryLoader
     {
+<<<<<<< HEAD
         if (!is_dir($dir = $this->locator->locate($path))) {
             return parent::supports($path, $type) ? parent::load($path, $type) : new RouteCollection();
         }
@@ -82,5 +77,7 @@ class AnnotationDirectoryLoader extends AnnotationFileLoader
         } catch (\Exception $e) {
             return false;
         }
+=======
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     }
 }

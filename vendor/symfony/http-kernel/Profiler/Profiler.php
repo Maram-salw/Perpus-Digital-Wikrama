@@ -37,7 +37,7 @@ class Profiler implements ResetInterface
     private bool $initiallyEnabled = true;
     private bool $enabled = true;
 
-    public function __construct(ProfilerStorageInterface $storage, LoggerInterface $logger = null, bool $enable = true)
+    public function __construct(ProfilerStorageInterface $storage, ?LoggerInterface $logger = null, bool $enable = true)
     {
         $this->storage = $storage;
         $this->logger = $logger;
@@ -110,6 +110,7 @@ class Profiler implements ResetInterface
     /**
      * Finds profiler tokens for the given criteria.
      *
+<<<<<<< HEAD
      * @param string|null $limit The maximum number of tokens to return
      * @param string|null $start The start date to search from
      * @param string|null $end   The end date to search to
@@ -117,14 +118,26 @@ class Profiler implements ResetInterface
      * @see https://php.net/datetime.formats for the supported date/time formats
      */
     public function find(?string $ip, ?string $url, ?string $limit, ?string $method, ?string $start, ?string $end, string $statusCode = null): array
+=======
+     * @param int|null      $limit  The maximum number of tokens to return
+     * @param string|null   $start  The start date to search from
+     * @param string|null   $end    The end date to search to
+     * @param \Closure|null $filter A filter to apply on the list of tokens
+     *
+     * @see https://php.net/datetime.formats for the supported date/time formats
+     */
+    public function find(?string $ip, ?string $url, ?int $limit, ?string $method, ?string $start, ?string $end, ?string $statusCode = null/* , \Closure $filter = null */): array
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
-        return $this->storage->find($ip, $url, $limit, $method, $this->getTimestamp($start), $this->getTimestamp($end), $statusCode);
+        $filter = 7 < \func_num_args() ? func_get_arg(7) : null;
+
+        return $this->storage->find($ip, $url, $limit, $method, $this->getTimestamp($start), $this->getTimestamp($end), $statusCode, $filter);
     }
 
     /**
      * Collects data for the given Response.
      */
-    public function collect(Request $request, Response $response, \Throwable $exception = null): ?Profile
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null): ?Profile
     {
         if (false === $this->enabled) {
             return null;
@@ -139,6 +152,10 @@ class Profiler implements ResetInterface
             $profile->setIp($request->getClientIp());
         } catch (ConflictingHeadersException $e) {
             $profile->setIp('Unknown');
+        }
+
+        if ($request->attributes->has('_virtual_type')) {
+            $profile->setVirtualType($request->attributes->get('_virtual_type'));
         }
 
         if ($prevToken = $response->headers->get('X-Debug-Token')) {

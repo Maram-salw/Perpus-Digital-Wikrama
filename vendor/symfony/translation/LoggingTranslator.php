@@ -37,10 +37,14 @@ class LoggingTranslator implements TranslatorInterface, TranslatorBagInterface, 
         $this->logger = $logger;
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
     public function trans(?string $id, array $parameters = [], string $domain = null, string $locale = null): string
+=======
+    public function trans(?string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         $trans = $this->translator->trans($id = (string) $id, $parameters, $domain, $locale);
         $this->log($id, $domain, $locale);
@@ -70,10 +74,14 @@ class LoggingTranslator implements TranslatorInterface, TranslatorBagInterface, 
         return $this->translator->getLocale();
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
     public function getCatalogue(string $locale = null): MessageCatalogueInterface
+=======
+    public function getCatalogue(?string $locale = null): MessageCatalogueInterface
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         return $this->translator->getCatalogue($locale);
     }
@@ -99,7 +107,7 @@ class LoggingTranslator implements TranslatorInterface, TranslatorBagInterface, 
     }
 
     /**
-     * Passes through all unknown calls onto the translator object.
+     * @return mixed
      */
     public function __call(string $method, array $args)
     {

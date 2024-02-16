@@ -12,6 +12,7 @@
 namespace Symfony\Component\HttpFoundation;
 
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use Symfony\Component\HttpFoundation\Exception\UnexpectedValueException;
 
 /**
  * InputBag is a container for user input values such as $_GET, $_POST, $_REQUEST, and $_COOKIE.
@@ -76,6 +77,27 @@ final class InputBag extends ParameterBag
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
+=======
+    public function getEnum(string $key, string $class, ?\BackedEnum $default = null): ?\BackedEnum
+    {
+        try {
+            return parent::getEnum($key, $class, $default);
+        } catch (UnexpectedValueException $e) {
+            throw new BadRequestException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    /**
+     * Returns the parameter value converted to string.
+     */
+    public function getString(string $key, string $default = ''): string
+    {
+        // Shortcuts the parent method because the validation on scalar is already done in get().
+        return (string) $this->get($key, $default);
+    }
+
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     public function filter(string $key, mixed $default = null, int $filter = \FILTER_DEFAULT, mixed $options = []): mixed
     {
         $value = $this->has($key) ? $this->all()[$key] : $default;

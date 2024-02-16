@@ -23,10 +23,14 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class TraceableEventDispatcher extends BaseTraceableEventDispatcher
 {
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
     protected function beforeDispatch(string $eventName, object $event)
+=======
+    protected function beforeDispatch(string $eventName, object $event): void
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         switch ($eventName) {
             case KernelEvents::REQUEST:
@@ -58,10 +62,14 @@ class TraceableEventDispatcher extends BaseTraceableEventDispatcher
         }
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
     protected function afterDispatch(string $eventName, object $event)
+=======
+    protected function afterDispatch(string $eventName, object $event): void
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         switch ($eventName) {
             case KernelEvents::CONTROLLER_ARGUMENTS:

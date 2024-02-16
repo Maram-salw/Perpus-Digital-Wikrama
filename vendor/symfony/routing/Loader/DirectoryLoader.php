@@ -17,10 +17,14 @@ use Symfony\Component\Routing\RouteCollection;
 
 class DirectoryLoader extends FileLoader
 {
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
     public function load(mixed $file, string $type = null): mixed
+=======
+    public function load(mixed $file, ?string $type = null): mixed
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         $path = $this->locator->locate($file);
 
@@ -46,12 +50,16 @@ class DirectoryLoader extends FileLoader
         return $collection;
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
     public function supports(mixed $resource, string $type = null): bool
+=======
+    public function supports(mixed $resource, ?string $type = null): bool
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
-        // only when type is forced to directory, not to conflict with AnnotationLoader
+        // only when type is forced to directory, not to conflict with AttributeLoader
 
         return 'directory' === $type;
     }

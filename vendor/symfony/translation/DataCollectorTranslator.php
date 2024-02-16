@@ -40,10 +40,14 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
         $this->translator = $translator;
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
     public function trans(?string $id, array $parameters = [], string $domain = null, string $locale = null): string
+=======
+    public function trans(?string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         $trans = $this->translator->trans($id = (string) $id, $parameters, $domain, $locale);
         $this->collectMessage($locale, $domain, $id, $trans, $parameters);
@@ -67,10 +71,14 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
         return $this->translator->getLocale();
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
     public function getCatalogue(string $locale = null): MessageCatalogueInterface
+=======
+    public function getCatalogue(?string $locale = null): MessageCatalogueInterface
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         return $this->translator->getCatalogue($locale);
     }
@@ -83,15 +91,19 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
         return $this->translator->getCatalogues();
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      *
      * @return string[]
      */
     public function warmUp(string $cacheDir): array
+=======
+    public function warmUp(string $cacheDir, ?string $buildDir = null): array
+>>>>>>> 6824861dc37871b6d9adc282a23e55ea8f13ddd7
     {
         if ($this->translator instanceof WarmableInterface) {
-            return (array) $this->translator->warmUp($cacheDir);
+            return (array) $this->translator->warmUp($cacheDir, $buildDir);
         }
 
         return [];
@@ -110,7 +122,7 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
     }
 
     /**
-     * Passes through all unknown calls onto the translator object.
+     * @return mixed
      */
     public function __call(string $method, array $args)
     {
